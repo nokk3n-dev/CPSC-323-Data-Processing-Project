@@ -1,36 +1,28 @@
 # Project for Compilers Class
 # Written by Dylan Werelius
 
-import re
+# Main file
+
+import project_functions
 
 # Global Constants for the file names (CHANGE THESE FOR YOUR OWN MACHINES)
-INPUT_FILE_PATH  = 'C:\\Coding\\Fullerton Coding\\Compilers - CPSC 323\\Group Project\\input.txt'
-LEXICON_FILE_PATH = 'C:\\Coding\\Fullerton Coding\\Compilers - CPSC 323\\Group Project\\lexicon_table.txt'
-COMPILED_FILE_PATH = 'C:\\Coding\\Fullerton Coding\\Compilers - CPSC 323\\Group Project\\compiled_code.txt'
+INPUT_FILE_PATH  = 'C:\\Coding\\Fullerton Coding\\Compilers - CPSC 323\\CPSC-323-Data-Processing-Project\\input.txt'
+LEXICON_FILE_PATH = 'C:\\Coding\\Fullerton Coding\\Compilers - CPSC 323\\CPSC-323-Data-Processing-Project\\lexicon_table.txt'
+COMPILED_FILE_PATH = 'C:\\Coding\\Fullerton Coding\\Compilers - CPSC 323\\CPSC-323-Data-Processing-Project\\compiled_code.txt'
 
-def remove_comments_and_whitespace(input_file, output_file):
-    with open(input_file, 'r') as f:
-        python_code = f.readlines()
+# Variables
+lexicon_table = {
+    'keywords':     ([], 0),
+    'identifiers':  ([], 0),
+    'operators':    ([], 0),
+    'separators':   ([], 0),
+    'literals':     ([], 0)
+}
 
-    # Regular expression to match Python comments
-    pattern = r'#.*?$|\'\'\'.*?\'\'\'|\"\"\".*?\"\"\"'
+# Main code
+project_functions.remove_comments_and_whitespace(INPUT_FILE_PATH, COMPILED_FILE_PATH)
 
-    with open(output_file, 'w') as f:
-        for line in python_code:
+project_functions.count_separators(COMPILED_FILE_PATH, lexicon_table)
+project_functions.count_operators(COMPILED_FILE_PATH, lexicon_table)
 
-            # Remove comments by splitting at the first occurrence of '#'
-            line_without_comment = line.split('#', 1)[0]
-
-            # Remove the tabs in front of the lines of code
-            line_without_whitespace = line_without_comment.lstrip()
-
-            # Remove the extra white spaces in the lines of code
-            line_without_extra_spaces = re.sub(r'\s+', ' ', line_without_whitespace)
-
-            if line_without_extra_spaces.strip():  
-                # Write the line with a return at the end because that was being removed too for some reason
-                f.write(line_without_extra_spaces.strip()  + '\n')
-
-remove_comments_and_whitespace(INPUT_FILE_PATH, COMPILED_FILE_PATH)
-
-print("Violet Evergarden")
+project_functions.write_lexicon_table(lexicon_table, LEXICON_FILE_PATH)
