@@ -1,5 +1,5 @@
 keywords     ==> ([], 0)
 identifiers  ==> ([], 0)
-operators    ==> (['==', '=', '+'], 5)
+operators    ==> (['==', '=', '+'], 8)
 separators   ==> ([',', ':', '(', ')'], 11)
-literals     ==> ([], 0)
+literals     ==> ([10, 20, 'slay\n', '"Queen"', False, 'Sum:'], 6)

@@ -4,4 +4,7 @@ if __name__ == "__main__":
 num1 = 10
 num2 = 20
 result = calculate_sum(num1, num2)
+literal = "slay\n"
+break_code = "\"Queen\""
+name = False
 print("Sum:", result)

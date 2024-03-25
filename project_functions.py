@@ -4,6 +4,7 @@
 # Functions file
 
 import re
+import ast
 
 def remove_comments_and_whitespace(input_file, output_file):
     with open(input_file, 'r') as f:
@@ -61,25 +62,32 @@ def count_separators(input_file, table):
 
 def count_operators(input_file, table):
     operators = {
-        '==': 0,
-        '=': 0,
-        '++': 0,
-        '+': 0,
-        '--': 0,
-        '-': 0,
-        '<<': 0,
-        '>>': 0
+        '==':   0,
+        '=':    0,
+        '++':   0,
+        '+':    0,
+        '--':   0,
+        '-':    0,
+        '<<':   0,
+        '>>':   0
     }
 
     with open(input_file, 'r') as file:
+        # This variable will keep track of if we are starting or ending quotes
         in_quotes = False
         for line in file:
+            # Index represents each character in the line
             index = 0
+            
+            # Loop for the length of the line, checking every character
             while index < len(line):
+
+                # Logic to determine if we encounter a quote
                 if line[index] == "\"" or line[index] == "\'":
                     in_quotes = not in_quotes
                     index += 1
                     continue
+                # Logic for finding the operators that are not in quotes
                 elif not in_quotes and line[index] in operators:
                     if index + 1 < len(line) and line[index + 1] == line[index]:
                         operators[line[index] * 2] += 1
@@ -92,6 +100,29 @@ def count_operators(input_file, table):
     found_operators = {key: count for key, count in operators.items() if count > 0}
 
     table["operators"] = (list(found_operators.keys()), sum(found_operators.values()))
+
+def find_literals(input_file, table):
+    # Array to hold the literals that we find
+    literals = []
+
+    with open(input_file, 'r') as file:
+        for line in file:
+            # Parse the line and extract literals
+            try:
+                tree = ast.parse(line)
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.Constant):
+                        # Handle when the node is a string literal
+                        if isinstance(node.value, str):
+                            # Append the unescaped string literal
+                            literals.append(ast.literal_eval(repr(node.value)))
+                        else:
+                            literals.append(node.value)
+
+            except SyntaxError:
+                # Skip the lines with syntax error
+                pass
+    table["literals"] = (list(literals), len(literals))
 
 def write_lexicon_table(table, output_file):
     with open(output_file, 'w') as f:
