@@ -94,6 +94,32 @@ def count_operators(input_file, table):
 
     table["operators"] = (list(found_operators.keys()), sum(found_operators.values()))
 
+def count_keywords(input_file, table):
+    keywords = set() #list of the keywords that were found 
+    keyword_list = {'def':0, 'return':0,}
+    with open(input_file, 'r') as f: #opening file 
+        in_quotes = False  #checks if it have quotes
+        def_count = 0
+        return_count = 0
+        for line in f: # going through the line  
+           for word in keyword_list: #going through the keywords
+            match_def= re.search(r'def', line)
+            if(match_def):
+                print("value of word.key", word)
+                keyword_list[word] += 1 #incrementing the dic for key 
+                keywords.add(match_def.group())
+
+            match_return = re.search(r'return', line)
+            if(match_return):
+                return_count += 1
+                keywords.add(match_return.group())
+
+
+    #found_keywords ={key: count for key, count in keywords.items() if count >0} #listing what was found 
+    table["keywords"] = (list(keywords), (def_count + return_count)) #updates the table
+
+    f.closed #close the file 
+
 def write_lexicon_table(table, output_file):
     with open(output_file, 'w') as f:
         for key, value in table.items():
