@@ -98,3 +98,35 @@ def write_lexicon_table(table, output_file):
         for key, value in table.items():
             f.write(f'{key:12} ==> {value}\n')
     f.closed
+
+def count_identifiers(input_file,table): 
+    identifiers = {
+        'add': 0,
+        'a' : 0,
+        'b' : 0,
+        'result' : 0,
+        'num1' : 0,
+        'num2' : 0,
+    }
+
+    with open(input_file, 'r') as fle:
+        in_quotes = False
+        for line in fle:
+            index = 0
+            while index < len(line):
+                    if line[index] == "\"" or line[index] == "\'":
+                        in_quotes = not in_quotes
+                        index += 1
+                        continue
+                    elif not in_quotes and line[index] in identifiers:
+                        if index + 1 < len(line) and line[index + 1] == line[index]:
+                            identifiers[line[index] * 2] += 1
+                            index += 2
+                            continue
+                        identifiers[line[index]] += 1
+                    index += 1    
+                    
+    # Filter out identifiers that are not found
+    found_identifiers = {key: count for key, count in identifiers.items() if count > 0}  
+
+    table["identifiers"] = (list(found_identifiers.keys()), sum(found_identifiers.values()))
