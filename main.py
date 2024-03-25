@@ -22,7 +22,7 @@ lexicon_table = {
 # Main code
 project_functions.remove_comments_and_whitespace(INPUT_FILE_PATH, COMPILED_FILE_PATH)
 
-project_functions.count_identifiers(COMPILED_FILE_PATH, LEXICON_FILE_PATH)
+project_functions.count_identifiers(COMPILED_FILE_PATH, lexicon_table)
 
 project_functions.count_separators(COMPILED_FILE_PATH, lexicon_table)
 project_functions.count_operators(COMPILED_FILE_PATH, lexicon_table)
