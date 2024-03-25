@@ -96,7 +96,7 @@ def count_operators(input_file, table):
 
 def count_keywords(input_file, table):
     keywords = set() #list of the keywords that were found 
-    keyword_list = {'def':0, 'return':0,}
+    keyword_list = {'def':0, 'return':0,'print':0, 'import':0}
     with open(input_file, 'r') as f: #opening file 
         in_quotes = False  #checks if it have quotes
         def_count = 0
@@ -105,17 +105,24 @@ def count_keywords(input_file, table):
            for word in keyword_list: #going through the keywords
             match_def= re.search(r'def', line)
             if(match_def):
-                print("value of word.key", word)
                 keyword_list[word] += 1 #incrementing the dic for key 
-                keywords.add(match_def.group())
+                keywords.add(match_def.group()) #adding to a list of found keywords
 
             match_return = re.search(r'return', line)
             if(match_return):
-                return_count += 1
+                keyword_list[word] += 1
                 keywords.add(match_return.group())
 
+            match_import = re.search(r'import', line)
+            if(match_import):
+                keyword_list[word] += 1
+                keywords.add(match_import.group())
 
-    #found_keywords ={key: count for key, count in keywords.items() if count >0} #listing what was found 
+            match_print = re.search(r'print', line)
+            if(match_print):
+               keyword_list[word] += 1
+               keywords.add(match_print.group())
+
     table["keywords"] = (list(keywords), (def_count + return_count)) #updates the table
 
     f.closed #close the file 
