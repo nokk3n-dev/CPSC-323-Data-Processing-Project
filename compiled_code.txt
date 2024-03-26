@@ -4,6 +4,8 @@ if __name__ == "__main__":
 num1 = 10
 num2 = 20
 result = calculate_sum(num1, num2)
+for count in range(0,10):
+print(count)
 literal = "slay\n"
 break_code = "\"Queen\""
 name = False

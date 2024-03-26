@@ -5,6 +5,7 @@
 
 import re
 import ast
+import keyword
 
 def remove_comments_and_whitespace(input_file, output_file):
     with open(input_file, 'r') as f:
@@ -123,6 +124,39 @@ def find_literals(input_file, table):
                 # Skip the lines with syntax error
                 pass
     table["literals"] = (list(literals), len(literals))
+
+def count_identifiers(input_file, table):
+    # data structure to store the unique identifiers
+    identifers = set()
+
+    with open(input_file, 'r') as file:
+        for line in file:
+            # Parse the line and extract identifiers
+            try:
+                tree = ast.parse(line)
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.Name):
+                        identifers.add(node.id)
+            except SyntaxError:
+                # Skip lines with syntax error
+                pass
+    # Add it to the table
+    table["identifiers"] = (list(identifers), len(identifers))
+
+def count_keywords(input_file, table):
+    # data structure to store the unique identifiers
+    keywords = set()
+
+    with open(input_file, 'r') as file:
+        for line in file:
+            # Split line into words
+            words = line.split()
+
+            for word in words:
+                if keyword.iskeyword(word) and word not in ["False", "True", "None"]:
+                    keywords.add(word)
+    # Add it to the table
+    table["keywords"] = (list(keywords), len(keywords))
 
 def write_lexicon_table(table, output_file):
     with open(output_file, 'w') as f:

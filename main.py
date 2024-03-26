@@ -25,6 +25,8 @@ project_functions.remove_comments_and_whitespace(INPUT_FILE_PATH, COMPILED_FILE_
 project_functions.count_separators(COMPILED_FILE_PATH, lexicon_table)
 project_functions.count_operators(COMPILED_FILE_PATH, lexicon_table)
 project_functions.find_literals(COMPILED_FILE_PATH, lexicon_table)
+project_functions.count_identifiers(COMPILED_FILE_PATH, lexicon_table)
+project_functions.count_keywords(COMPILED_FILE_PATH, lexicon_table)
 
 project_functions.write_lexicon_table(lexicon_table, LEXICON_FILE_PATH)
 

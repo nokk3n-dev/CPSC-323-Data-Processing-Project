@@ -11,6 +11,9 @@ if __name__    == "__main__":
     # Calculate the sum
     result =      calculate_sum(num1, num2)
 
+    for count in range(0,10):
+        print(count)
+
     literal = "slay\n"
     break_code = "\"Queen\""
 

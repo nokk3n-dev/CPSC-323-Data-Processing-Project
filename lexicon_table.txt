@@ -1,5 +1,5 @@
-keywords     ==> ([], 0)
-identifiers  ==> ([], 0)
+keywords     ==> (['return', 'if', 'def', 'for', 'in'], 5)
+identifiers  ==> (['a', 'calculate_sum', 'result', 'b', 'literal', 'break_code', 'count', 'name', 'num1', 'print', 'num2'], 11)
 operators    ==> (['==', '=', '+'], 8)
-separators   ==> ([',', ':', '(', ')'], 11)
+separators   ==> ([',', ':', '(', ')'], 17)
 literals     ==> ([10, 20, 'slay\n', '"Queen"', False, 'Sum:'], 6)
