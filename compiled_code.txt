@@ -1,7 +1,9 @@
 def calculate_sum(a, b):
 return a + b
+import
 if __name__ == "__main__":
 num1 = 10
 num2 = 20
+import
 result = calculate_sum(num1, num2)
 print("Sum:", result)

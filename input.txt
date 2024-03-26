@@ -2,12 +2,13 @@ def calculate_sum(a,   b):
     # This function calculates the sum of two numbers
     return a +    b
 
+import
 
 # Main function
 if __name__    == "__main__":
     num1 = 10
     num2 = 20
-
+import
     # Calculate the sum
     result =      calculate_sum(num1, num2)
 

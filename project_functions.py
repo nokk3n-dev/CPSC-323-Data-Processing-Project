@@ -101,29 +101,33 @@ def count_keywords(input_file, table):
         in_quotes = False  #checks if it have quotes
         def_count = 0
         return_count = 0
+        import_count =0
         for line in f: # going through the line  
-           for word in keyword_list: #going through the keywords
+           #for word in keyword_list: #going through the keywords
             match_def= re.search(r'def', line)
             if(match_def):
-                keyword_list[word] += 1 #incrementing the dic for key 
+                def_count += 1
+                #keyword_list[word] += 1 #incrementing the dic for key 
                 keywords.add(match_def.group()) #adding to a list of found keywords
 
             match_return = re.search(r'return', line)
             if(match_return):
-                keyword_list[word] += 1
+                return_count +=1
+                #keyword_list[word] += 1
                 keywords.add(match_return.group())
-
+            
             match_import = re.search(r'import', line)
             if(match_import):
-                keyword_list[word] += 1
+                import_count += 1
+                #keyword_list[word] += 1
                 keywords.add(match_import.group())
-
+            '''
             match_print = re.search(r'print', line)
             if(match_print):
                keyword_list[word] += 1
                keywords.add(match_print.group())
-
-    table["keywords"] = (list(keywords), (def_count + return_count)) #updates the table
+            '''
+    table["keywords"] = (list(keywords), (def_count+return_count+import_count)) #updates the table
 
     f.closed #close the file 
 
