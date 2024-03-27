@@ -1,0 +1,18 @@
+# Define a function to calculate the sum of two numbers
+def write_letter(letter, sender):
+    print(receiver, "\nSincerely, \n", sender)
+
+# Main function
+if __name__ == "__main__":
+
+    # Print Greeting
+    print("Hello, Welcome to CH Postal")
+
+    # get input
+    userLetter = input("Please Type your letter here:\n")
+
+    # get name
+    userName = input("Please Enter your name: \n")
+
+    # Send the letter
+    write_letter(userLetter, userName)

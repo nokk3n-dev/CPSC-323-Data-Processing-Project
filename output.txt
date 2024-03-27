@@ -1,0 +1,42 @@
+Test Number: 1
+
+Code with excess space and comments removed:
+---------------------------------------------------------------------
+def add(a, b):
+result = a + b
+return result
+print(add(5, 3))
+---------------------------------------------------------------------
+
+Tokenized Code:
+---------------------------------------------------------------------
+keywords     ==> (['def', 'return'], 2)
+identifiers  ==> (['add', 'b', 'print', 'a', 'result'], 9)
+operators    ==> (['=', '+'], 2)
+separators   ==> ([',', ':', '(', ')'], 9)
+literals     ==> ([3, 5], 2)
+---------------------------------------------------------------------
+
+
+
+Test Number: 2
+
+Code with excess space and comments removed:
+---------------------------------------------------------------------
+def write_letter(letter, sender):
+print(receiver, "\nSincerely, \n", sender)
+if __name__ == "__main__":
+print("Hello, Welcome to CH Postal")
+userLetter = input("Please Type your letter here:\n")
+userName = input("Please Enter your name: \n")
+write_letter(userLetter, userName)
+---------------------------------------------------------------------
+
+Tokenized Code:
+---------------------------------------------------------------------
+keywords     ==> (['def', 'if'], 2)
+identifiers  ==> (['userName', 'write_letter', 'receiver', '__name__', 'letter', 'input', 'sender', 'print', 'userLetter'], 15)
+operators    ==> (['==', '='], 3)
+separators   ==> ([',', ':', '(', ')'], 18)
+literals     ==> (['Hello, Welcome to CH Postal', '__main__', '\nSincerely, \n', 'Please Type your letter here:\n', 'Please Enter your name: \n'], 5)
+---------------------------------------------------------------------

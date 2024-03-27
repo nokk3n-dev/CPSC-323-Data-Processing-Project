@@ -98,9 +98,7 @@ def count_operators(input_file, table):
 
 def count_keywords(input_file, table):
     keywords = set() #list of the keywords that were found 
-    keyword_list = {'def':0, 'return':0,'print':0, 'import':0}
-    with open(input_file, 'r') as f: #opening file 
-        in_quotes = False  #checks if it have quotes
+    with open(input_file, 'r') as f: #opening file
         
         #read the file
         text = f.read()
@@ -111,7 +109,7 @@ def count_keywords(input_file, table):
         #count of keywords found 
         final_count=0
         for word in words: #going through the line as it is split()
-            if keyword.iskeyword(word): #if the word is a keyword enter 
+            if word in ["print", "input"] or keyword.iskeyword(word): #if the word is a keyword enter 
                 keywords.add(word) #update the list of keywords found 
                 final_count+=1  #increment the count when the keyword is found
 
@@ -119,26 +117,88 @@ def count_keywords(input_file, table):
 
     f.closed #close the file 
 
-def write_lexicon_table(table, output_file):
-    with open(output_file, 'w') as f:
+def write_output(table, output_file, test_no, compiled_code_file):
+
+    # Get the compiled code
+    with open(compiled_code_file, 'r') as file:
+        file_content = file.read()
+    file.closed
+        
+    with open(output_file, 'a') as f:
+
+        # Write the test number
+        if test_no > 1:
+            f.write(f"\n\n\nTest Number: {test_no}\n\n")
+        else:
+            f.write(f"Test Number: {test_no}\n\n")
+
+        # Write the copmiled code
+        f.write("Code with excess space and comments removed:\n")
+        f.write("---------------------------------------------------------------------\n")
+        f.write(file_content)
+        f.write("---------------------------------------------------------------------\n")
+
+        # Write the table
+        f.write("\nTokenized Code:\n")
+        f.write("---------------------------------------------------------------------\n")
         for key, value in table.items():
+            
             f.write(f'{key:12} ==> {value}\n')
+        f.write("---------------------------------------------------------------------\n")
     f.closed
 
 def count_identifiers(input_file,table): 
     identifiers = set()
     count = 0
 
-    with open (input_file, 'r') as file:
-        for line in file: #This reads the file line by line
-                try:
-                    found_identifiers = ast.parse(line) # This adds to the syntax tree and adds
-                    for node in ast.walk(found_identifiers): # this walks through the syntax tree
-                        if isinstance(node, ast.Name):
-                            identifiers.add(node.id)
-                            count += 1
-                except SyntaxError:
-                    pass
+    with open(input_file, 'r') as file:
+        try:
+            file_content = file.read()
+            found_identifiers = ast.parse(file_content) # This adds to the syntax tree and adds
+            for node in ast.walk(found_identifiers): # this walks through the syntax tree
+                if isinstance(node, ast.Name):
+                    identifiers.add(node.id)
+                    count += 1
+
+                # Case for if it is a function definition
+                elif isinstance(node, ast.FunctionDef):
+                    identifiers.add(node.name)
+                    count += 1
+
+                    # Add the function parameters
+                    for arg in node.args.args:
+                        identifiers.add(arg.arg)
+                        count += 1
+        except SyntaxError:
+            pass
       
 
     table["identifiers"] = (list(identifiers), count)
+
+def find_literals(input_file, table):
+    # Array to hold the literals that we find
+    literals = set()
+    count = 0
+
+    with open(input_file, 'r') as file:
+        for line in file:
+            if '\"__main__\"' in line:
+                count += 1
+                literals.add("__main__")
+            # Parse the line and extract literals
+            try:
+                tree = ast.parse(line)
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.Constant):
+                        count += 1
+                        # Handle when the node is a string literal
+                        if isinstance(node.value, str):
+                            # Append the unescaped string literal
+                            literals.add(ast.literal_eval(repr(node.value)))
+                        else:
+                            literals.add(node.value)
+
+            except SyntaxError:
+                # Skip the lines with syntax error
+                pass
+    table["literals"] = (list(literals), count)

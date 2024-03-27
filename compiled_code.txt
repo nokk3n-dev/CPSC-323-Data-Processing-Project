@@ -1,7 +1,4 @@
-def calculate_sum(a, b):
-return a + b
-if __name__ == "__main__":
-num1 = 10
-num2 = 20
-result = calculate_sum(num1, num2)
-print("Sum:", result)
+def add(a, b):
+result = a + b
+return result
+print(add(5, 3))

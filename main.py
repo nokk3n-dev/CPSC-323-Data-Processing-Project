@@ -6,10 +6,13 @@
 import project_functions
 
 # Global Constants for the file names (CHANGE THESE FOR YOUR OWN MACHINES)
+INPUT_FILE_PATH  = 'C:\\Coding\\Fullerton Coding\\Compilers - CPSC 323\\CPSC-323-Data-Processing-Project\\input.txt'
+OUTPUT_FILE_PATH = 'C:\\Coding\\Fullerton Coding\\Compilers - CPSC 323\\CPSC-323-Data-Processing-Project\\output.txt'
+COMPILED_FILE_PATH = 'C:\\Coding\\Fullerton Coding\\Compilers - CPSC 323\\CPSC-323-Data-Processing-Project\\compiled_code.txt'
 
-INPUT_FILE_PATH  = 'C:\\Users\\s_glover\\Documents\\GitHub\\CPSC-323-Data-Processing-Project\\input.txt'
-LEXICON_FILE_PATH = 'C:\\Users\\s_glover\\Documents\\GitHub\\CPSC-323-Data-Processing-Project\\lexicon_table.txt'
-COMPILED_FILE_PATH = 'C:\\Users\\s_glover\\Documents\\GitHub\\CPSC-323-Data-Processing-Project\\compiled_code.txt'
+# Constants for the second test
+INPUT_FILE_PATH_2 = 'C:\\Coding\\Fullerton Coding\\Compilers - CPSC 323\\CPSC-323-Data-Processing-Project\\input 2.txt'
+COMPILED_FILE_PATH_2 = 'C:\\Coding\\Fullerton Coding\\Compilers - CPSC 323\\CPSC-323-Data-Processing-Project\\compiled_code 2.txt'
 
 
 # Variables
@@ -22,11 +25,25 @@ lexicon_table = {
 }
 
 # Main code
+
+# Clear the output file
+with open(OUTPUT_FILE_PATH, 'w'):
+    pass
+
+# Test Number 1
 project_functions.remove_comments_and_whitespace(INPUT_FILE_PATH, COMPILED_FILE_PATH)
-
-project_functions.count_identifiers(COMPILED_FILE_PATH, lexicon_table)
-
+project_functions.count_identifiers(INPUT_FILE_PATH, lexicon_table)
 project_functions.count_separators(COMPILED_FILE_PATH, lexicon_table)
 project_functions.count_operators(COMPILED_FILE_PATH, lexicon_table)
 project_functions.count_keywords(COMPILED_FILE_PATH, lexicon_table)
-project_functions.write_lexicon_table(lexicon_table, LEXICON_FILE_PATH)
+project_functions.find_literals(COMPILED_FILE_PATH, lexicon_table)
+project_functions.write_output(lexicon_table, OUTPUT_FILE_PATH, 1, COMPILED_FILE_PATH)
+
+#Test Number 2
+project_functions.remove_comments_and_whitespace(INPUT_FILE_PATH_2, COMPILED_FILE_PATH_2)
+project_functions.count_identifiers(INPUT_FILE_PATH_2, lexicon_table)
+project_functions.count_separators(COMPILED_FILE_PATH_2, lexicon_table)
+project_functions.count_operators(COMPILED_FILE_PATH_2, lexicon_table)
+project_functions.count_keywords(COMPILED_FILE_PATH_2, lexicon_table)
+project_functions.find_literals(COMPILED_FILE_PATH_2, lexicon_table)
+project_functions.write_output(lexicon_table, OUTPUT_FILE_PATH, 2, COMPILED_FILE_PATH_2)
