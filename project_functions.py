@@ -102,6 +102,7 @@ def count_keywords(input_file, table):
     with open(input_file, 'r') as f: #opening file 
         in_quotes = False  #checks if it have quotes
         
+        #read the file
         text = f.read()
 
         #captures the words
