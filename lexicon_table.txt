@@ -1,5 +1,5 @@
 keywords     ==> ([], 0)
-identifiers  ==> (['a', 'b'], 9)
+identifiers  ==> (['num1', 'result', 'calculate_sum', 'print', 'a', 'num2', 'b'], 10)
 operators    ==> (['==', '=', '+'], 5)
 separators   ==> ([',', ':', '(', ')'], 11)
 literals     ==> ([], 0)

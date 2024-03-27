@@ -4,6 +4,7 @@
 # Functions file
 
 import re
+import ast
 
 def remove_comments_and_whitespace(input_file, output_file):
     with open(input_file, 'r') as f:
@@ -100,33 +101,19 @@ def write_lexicon_table(table, output_file):
     f.closed
 
 def count_identifiers(input_file,table): 
-    identifiers = {
-        'add': 0,
-        'a' : 0,
-        'b' : 0,
-        'result' : 0,
-        'num1' : 0,
-        'num2' : 0,
-    }
+    identifiers = set()
+    count = 0
 
-    with open(input_file, 'r') as fle:
-        in_quotes = False
-        for line in fle:
-            index = 0
-            while index < len(line):
-                    if line[index] == "\"" or line[index] == "\'":
-                        in_quotes = not in_quotes
-                        index += 1
-                        continue
-                    elif not in_quotes and line[index] in identifiers:
-                        if index + 1 < len(line) and line[index + 1] == line[index]:
-                            identifiers[line[index] * 2] += 1
-                            index += 2
-                            continue
-                        identifiers[line[index]] += 1
-                    index += 1    
-                    
-    # Filter out identifiers that are not found
-    found_identifiers = {key: count for key, count in identifiers.items() if count > 0}  
+    with open (input_file, 'r') as file:
+        for line in file: #This reads the file line by line
+                try:
+                    found_identifiers = ast.parse(line) # This adds to the syntax tree and adds
+                    for node in ast.walk(found_identifiers): # this walks through the syntax tree
+                        if isinstance(node, ast.Name):
+                            identifiers.add(node.id)
+                            count += 1
+                except SyntaxError:
+                    pass
+      
 
-    table["identifiers"] = (list(found_identifiers.keys()), sum(found_identifiers.values()))
+    table["identifiers"] = (list(identifiers), count)
