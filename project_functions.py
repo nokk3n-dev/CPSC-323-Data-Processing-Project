@@ -5,6 +5,8 @@
 
 import re
 import ast
+import keyword
+
 
 def remove_comments_and_whitespace(input_file, output_file):
     with open(input_file, 'r') as f:
@@ -93,6 +95,29 @@ def count_operators(input_file, table):
     found_operators = {key: count for key, count in operators.items() if count > 0}
 
     table["operators"] = (list(found_operators.keys()), sum(found_operators.values()))
+
+def count_keywords(input_file, table):
+    keywords = set() #list of the keywords that were found 
+    keyword_list = {'def':0, 'return':0,'print':0, 'import':0}
+    with open(input_file, 'r') as f: #opening file 
+        in_quotes = False  #checks if it have quotes
+        
+        #read the file
+        text = f.read()
+
+        #captures the words
+        words=text.split()
+
+        #count of keywords found 
+        final_count=0
+        for word in words: #going through the line as it is split()
+            if keyword.iskeyword(word): #if the word is a keyword enter 
+                keywords.add(word) #update the list of keywords found 
+                final_count+=1  #increment the count when the keyword is found
+
+    table["keywords"] = (list(keywords), (final_count)) #updates the table
+
+    f.closed #close the file 
 
 def write_lexicon_table(table, output_file):
     with open(output_file, 'w') as f:
