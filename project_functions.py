@@ -4,6 +4,7 @@
 # Functions file
 
 import re
+import ast
 
 def remove_comments_and_whitespace(input_file, output_file):
     with open(input_file, 'r') as f:
@@ -98,3 +99,21 @@ def write_lexicon_table(table, output_file):
         for key, value in table.items():
             f.write(f'{key:12} ==> {value}\n')
     f.closed
+
+def count_identifiers(input_file,table): 
+    identifiers = set()
+    count = 0
+
+    with open (input_file, 'r') as file:
+        for line in file: #This reads the file line by line
+                try:
+                    found_identifiers = ast.parse(line) # This adds to the syntax tree and adds
+                    for node in ast.walk(found_identifiers): # this walks through the syntax tree
+                        if isinstance(node, ast.Name):
+                            identifiers.add(node.id)
+                            count += 1
+                except SyntaxError:
+                    pass
+      
+
+    table["identifiers"] = (list(identifiers), count)
