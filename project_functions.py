@@ -5,6 +5,8 @@
 
 import re
 import ast
+import keyword
+
 
 def remove_comments_and_whitespace(input_file, output_file):
     with open(input_file, 'r') as f:
@@ -99,35 +101,20 @@ def count_keywords(input_file, table):
     keyword_list = {'def':0, 'return':0,'print':0, 'import':0}
     with open(input_file, 'r') as f: #opening file 
         in_quotes = False  #checks if it have quotes
-        def_count = 0
-        return_count = 0
-        import_count =0
-        for line in f: # going through the line  
-           #for word in keyword_list: #going through the keywords
-            match_def= re.search(r'def', line)
-            if(match_def):
-                def_count += 1
-                #keyword_list[word] += 1 #incrementing the dic for key 
-                keywords.add(match_def.group()) #adding to a list of found keywords
+        
+        text = f.read()
 
-            match_return = re.search(r'return', line)
-            if(match_return):
-                return_count +=1
-                #keyword_list[word] += 1
-                keywords.add(match_return.group())
-            
-            match_import = re.search(r'import', line)
-            if(match_import):
-                import_count += 1
-                #keyword_list[word] += 1
-                keywords.add(match_import.group())
-            '''
-            match_print = re.search(r'print', line)
-            if(match_print):
-               keyword_list[word] += 1
-               keywords.add(match_print.group())
-            '''
-    table["keywords"] = (list(keywords), (def_count+return_count+import_count)) #updates the table
+        #captures the words
+        words=text.split()
+
+        #count of keywords found 
+        final_count=0
+        for word in words: #going through the line as it is split()
+            if keyword.iskeyword(word): #if the word is a keyword enter 
+                keywords.add(word) #update the list of keywords found 
+                final_count+=1  #increment the count when the keyword is found
+
+    table["keywords"] = (list(keywords), (final_count)) #updates the table
 
     f.closed #close the file 
 
