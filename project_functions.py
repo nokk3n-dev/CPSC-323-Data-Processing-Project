@@ -1,5 +1,4 @@
 # Project for Compilers Class
-# Written by Dylan Werelius
 
 # Functions file
 
@@ -97,21 +96,25 @@ def count_operators(input_file, table):
     table["operators"] = (list(found_operators.keys()), sum(found_operators.values()))
 
 def count_keywords(input_file, table):
-    keywords = set() #list of the keywords that were found 
+    keywords = [] #list of the keywords that were found 
     with open(input_file, 'r') as f: #opening file
         
         #read the file
         text = f.read()
 
         #captures the words
-        words=text.split()
+        words = re.findall(r'(\'[^\']+\'|\"[^\"]+\"|\b\w+\b)', text)
 
         #count of keywords found 
         final_count=0
         for word in words: #going through the line as it is split()
-            if word in ["print", "input"] or keyword.iskeyword(word): #if the word is a keyword enter 
-                keywords.add(word) #update the list of keywords found 
-                final_count+=1  #increment the count when the keyword is found
+            if word[0] in ['\"', '\''] and word[len(word)-1] in ['\"', '\'']:
+                pass
+            else:
+                if word in ["print", "input"] or keyword.iskeyword(word): #if the word is a keyword enter 
+                    if (word not in keywords):
+                        keywords.append(word) #update the list of keywords found 
+                    final_count+=1  #increment the count when the keyword is found
 
     table["keywords"] = (list(keywords), (final_count)) #updates the table
 
@@ -148,7 +151,7 @@ def write_output(table, output_file, test_no, compiled_code_file):
     f.closed
 
 def count_identifiers(input_file,table): 
-    identifiers = set()
+    identifiers = []
     count = 0
 
     with open(input_file, 'r') as file:
@@ -156,18 +159,21 @@ def count_identifiers(input_file,table):
             file_content = file.read()
             found_identifiers = ast.parse(file_content) # This adds to the syntax tree and adds
             for node in ast.walk(found_identifiers): # this walks through the syntax tree
-                if isinstance(node, ast.Name):
-                    identifiers.add(node.id)
+                if isinstance(node, ast.Name) and node.id not in ["print", "input"]:
+                    if node.id not in identifiers:
+                        identifiers.append(node.id)
                     count += 1
 
                 # Case for if it is a function definition
                 elif isinstance(node, ast.FunctionDef):
-                    identifiers.add(node.name)
+                    if node.name not in identifiers:
+                        identifiers.append(node.name)
                     count += 1
 
                     # Add the function parameters
                     for arg in node.args.args:
-                        identifiers.add(arg.arg)
+                        if arg.arg not in identifiers:
+                            identifiers.append(arg.arg)
                         count += 1
         except SyntaxError:
             pass
@@ -177,14 +183,14 @@ def count_identifiers(input_file,table):
 
 def find_literals(input_file, table):
     # Array to hold the literals that we find
-    literals = set()
+    literals = []
     count = 0
 
     with open(input_file, 'r') as file:
         for line in file:
-            if '\"__main__\"' in line:
+            if '\"__main__\"' in line and '\"__main__\"' not in literals:
                 count += 1
-                literals.add("__main__")
+                literals.append("__main__")
             # Parse the line and extract literals
             try:
                 tree = ast.parse(line)
@@ -194,9 +200,11 @@ def find_literals(input_file, table):
                         # Handle when the node is a string literal
                         if isinstance(node.value, str):
                             # Append the unescaped string literal
-                            literals.add(ast.literal_eval(repr(node.value)))
+                            if node.value not in literals:
+                                literals.append(ast.literal_eval(repr(node.value)))
                         else:
-                            literals.add(node.value)
+                            if node.value not in literals:
+                                literals.append(node.value)
 
             except SyntaxError:
                 # Skip the lines with syntax error
