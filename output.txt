@@ -10,11 +10,11 @@ print(add(5, 3))
 
 Tokenized Code:
 ---------------------------------------------------------------------
-keywords     ==> (['def', 'return'], 2)
-identifiers  ==> (['add', 'b', 'print', 'a', 'result'], 9)
+keywords     ==> (['def', 'return', 'print'], 3)
+identifiers  ==> (['add', 'a', 'b', 'result'], 8)
 operators    ==> (['=', '+'], 2)
 separators   ==> ([',', ':', '(', ')'], 9)
-literals     ==> ([3, 5], 2)
+literals     ==> ([5, 3], 2)
 ---------------------------------------------------------------------
 
 
@@ -30,13 +30,14 @@ print("Hello, Welcome to CH Postal")
 userLetter = input("Please Type your letter here:\n")
 userName = input("Please Enter your name: \n")
 write_letter(userLetter, userName)
+print("This print is in quotes")
 ---------------------------------------------------------------------
 
 Tokenized Code:
 ---------------------------------------------------------------------
-keywords     ==> (['def', 'if'], 2)
-identifiers  ==> (['userName', 'write_letter', 'receiver', '__name__', 'letter', 'input', 'sender', 'print', 'userLetter'], 15)
+keywords     ==> (['def', 'print', 'if', 'input'], 7)
+identifiers  ==> (['write_letter', 'letter', 'sender', '__name__', 'userLetter', 'userName', 'receiver'], 11)
 operators    ==> (['==', '='], 3)
-separators   ==> ([',', ':', '(', ')'], 18)
-literals     ==> (['Hello, Welcome to CH Postal', '__main__', '\nSincerely, \n', 'Please Type your letter here:\n', 'Please Enter your name: \n'], 5)
+separators   ==> ([',', ':', '(', ')'], 20)
+literals     ==> (['\nSincerely, \n', '__main__', 'Hello, Welcome to CH Postal', 'Please Type your letter here:\n', 'Please Enter your name: \n', 'This print is in quotes'], 6)
 ---------------------------------------------------------------------

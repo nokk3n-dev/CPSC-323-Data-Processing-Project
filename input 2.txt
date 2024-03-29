@@ -16,3 +16,6 @@ if __name__ == "__main__":
 
     # Send the letter
     write_letter(userLetter, userName)
+
+    # test print in quotes
+    print("This print is in quotes")
